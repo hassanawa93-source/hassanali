@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Submit TikTok and Instagram video links to a creator discovery hub." />
+  <title>CreatorLink — Video Discovery</title>
+  <style>
+    :root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233b;--text:#f4f7ff;--muted:#9eabc7;--line:#293653;--purple:#8b5cf6;--cyan:#22d3ee;--pink:#fb7185;--green:#34d399}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at 15% 0%,#20214b 0,transparent 40%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;line-height:1.5}
+    a{color:inherit} .wrap{max-width:1120px;margin:auto;padding:24px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:10px 0 28px}
+    .brand{font-weight:850;font-size:1.25rem;letter-spacing:-.5px}.brand span{color:var(--cyan)}
+    .tag{font-size:.78rem;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:var(--muted)}
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;padding:26px 0 34px}
+    .eyebrow{color:var(--cyan);font-weight:750;text-transform:uppercase;letter-spacing:1.5px;font-size:.78rem}
+    h1{font-size:clamp(2.2rem,5vw,4.3rem);line-height:1.03;letter-spacing:-2px;margin:12px 0 18px}
+    h1 em{font-style:normal;color:#b9a2ff}.lead{color:var(--muted);font-size:1.05rem;max-width:610px}
+    .hero-card,.panel,.stat{background:linear-gradient(160deg,rgba(24,35,59,.96),rgba(18,26,46,.96));border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 70px #0002}
+    .hero-card{padding:24px}.mocktop{display:flex;gap:8px;margin-bottom:22px}.dot{width:9px;height:9px;border-radius:50%;background:#475569}.preview{border-radius:17px;background:linear-gradient(135deg,#34246a,#12425a);padding:24px;min-height:180px;display:flex;flex-direction:column;justify-content:space-between}
+    .play{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#ffffff20;border:1px solid #ffffff60;font-size:1.3rem}
+    .preview strong{font-size:1.2rem}.preview small{color:#d6e2ff}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 28px}.stat{padding:17px}.stat strong{display:block;font-size:1.35rem}.stat span{color:var(--muted);font-size:.85rem}
+    .main-grid{display:grid;grid-template-columns:1fr .85fr;gap:22px;align-items:start}.panel{padding:24px;margin-bottom:22px}h2{font-size:1.25rem;margin:0 0 7px}.sub{color:var(--muted);font-size:.92rem;margin:0 0 20px}
+    label{display:block;font-size:.9rem;font-weight:700;margin:15px 0 8px}.platforms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .platform{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0d1528;color:var(--text);cursor:pointer;font-weight:700}
+    .platform.active{border-color:var(--purple);background:#31245b}
+    input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#0b1325;color:var(--text);font:inherit;outline:none}
+    input:focus,select:focus{border-color:var(--cyan)}.hint{font-size:.8rem;color:var(--muted);margin-top:7px}
+    .btn{width:100%;margin-top:18px;border:0;border-radius:12px;padding:14px 18px;background:linear-gradient(90deg,var(--purple),#6366f1);color:white;font-weight:800;font-size:1rem;cursor:pointer}.btn:hover{filter:brightness(1.1)}
+    .notice{border:1px solid #765c2e;background:#382d19;color:#f6dca6;padding:12px 14px;border-radius:12px;font-size:.84rem;margin-top:15px}
+    .list{display:grid;gap:12px}.item{border:1px solid var(--line);background:#0d1528;border-radius:14px;padding:14px;display:flex;align-items:center;gap:13px}.icon{width:44px;height:44px;display:grid;place-items:center;background:#252347;border-radius:12px;font-size:1.2rem;flex-shrink:0}.item-main{min-width:0;flex:1}.item-main strong{display:block;overflow-wrap:anywhere}.item-main small{color:var(--muted)}.openlink{color:var(--cyan);font-size:.85rem;font-weight:750;text-decoration:none}
+    .empty{color:var(--muted);padding:22px;border:1px dashed var(--line);border-radius:14px;text-align:center}
+    footer{border-top:1px solid var(--line);padding:24px 0 10px;color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    .toast{display:none;margin-top:14px;border-radius:10px;padding:11px 13px;background:#12392f;color:#b9ffe7;font-size:.9rem}.toast.show{display:block}
+    @media(max-width:800px){.hero,.main-grid{grid-template-columns:1fr}.hero{padding-top:10px}.hero-card{order:-1}.stats{grid-template-columns:1fr}.wrap{padding:17px}h1{letter-spacing:-1px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Creator<span>Link</span></div>
+      <div class="tag">VIDEO DISCOVERY HUB</div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">One link. More discovery.</div>
+        <h1>Help great videos get <em>discovered.</em></h1>
+        <p class="lead">Submit a public TikTok or Instagram video link and add it to this community discovery board. This demo saves submissions in your current browser only.</p>
+      </div>
+      <div class="hero-card">
+        <div class="mocktop"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+        <div class="preview">
+          <div class="play">▶</div>
+          <div><strong>Creator discovery</strong><br><small>Share public video links with a wider community</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Demo statistics">
+      <div class="stat"><strong id="videoCount">0</strong><span>Links submitted in this browser</span></div>
+      <div class="stat"><strong>2</strong><span>Supported platforms</span></div>
+      <div class="stat"><strong>Free</strong><span>Demo prototype</span></div>
+    </section>
+
+    <main class="main-grid">
+      <section class="panel">
+        <h2>Submit a video</h2>
+        <p class="sub">Paste a public video URL. Keep submissions respectful and follow each platform's rules.</p>
+        <form id="submitForm">
+          <label>Choose platform</label>
+          <div class="platforms">
+            <button class="platform active" type="button" data-platform="TikTok">♪ TikTok</button>
+            <button class="platform" type="button" data-platform="Instagram">◎ Instagram</button>
+          </div>
+          <label for="videoUrl">Video link</label>
+          <input id="videoUrl" type="url" placeholder="https://www.tiktok.com/@name/video/..." required />
+          <div class="hint">Use a full public TikTok or Instagram video URL.</div>
+          <label for="creatorName">Creator name (optional)</label>
+          <input id="creatorName" type="text" maxlength="50" placeholder="Your creator name" />
+          <button class="btn" type="submit">Add to discovery board</button>
+          <div class="toast" id="toast" role="status"></div>
+          <div class="notice"><strong>Demo limitation:</strong> this page does not create views, automate ad watching, or verify third-party engagement. It only lists links submitted in this browser.</div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Community discovery board</h2>
+        <p class="sub">Open a submitted public link to view it on its original platform.</p>
+        <div class="list" id="videoList"><div class="empty">No videos submitted yet. Add the first link.</div></div>
+      </section>
+    </main>
+
+    <footer>
+      <span>© <span id="year"></span> CreatorLink Demo</span>
+      <span>Not affiliated with TikTok, Instagram, or Meta.</span>
+    </footer>
+  </div>
+<script>
+  const form = document.getElementById('submitForm');
+  const urlInput = document.getElementById('videoUrl');
+  const creatorInput = document.getElementById('creatorName');
+  const list = document.getElementById('videoList');
+  const count = document.getElementById('videoCount');
+  const toast = document.getElementById('toast');
+  const platformButtons = [...document.querySelectorAll('.platform')];
+  let selectedPlatform = 'TikTok';
+  let videos = [];
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+  platformButtons.forEach(btn => btn.addEventListener('click', () => {
+    selectedPlatform = btn.dataset.platform;
+    platformButtons.forEach(b => b.classList.toggle('active', b === btn));
+    urlInput.placeholder = selectedPlatform === 'TikTok'
+      ? 'https://www.tiktok.com/@name/video/...'
+      : 'https://www.instagram.com/reel/...';
+  }));
+
+  function validPlatformUrl(raw) {
+    try {
+      const u = new URL(raw);
+      const host = u.hostname.toLowerCase().replace(/^www\./, '');
+      if (selectedPlatform === 'TikTok') return host === 'tiktok.com' || host.endsWith('.tiktok.com');
+      return host === 'instagram.com' || host.endsWith('.instagram.com');
+    } catch { return false; }
+  }
+
+  function render() {
+    count.textContent = videos.length;
+    list.innerHTML = '';
+    if (!videos.length) {
+      const empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = 'No videos submitted yet. Add the first link.';
+      list.appendChild(empty);
+      return;
+    }
+    videos.slice().reverse().forEach(video => {
+      const item = document.createElement('div'); item.className = 'item';
+      const icon = document.createElement('div'); icon.className = 'icon'; icon.textContent = video.platform === 'TikTok' ? '♪' : '◎';
+      const main = document.createElement('div'); main.className = 'item-main';
+      const strong = document.createElement('strong'); strong.textContent = video.creator || video.platform + ' video';
+      const small = document.createElement('small'); small.textContent = video.platform + ' · ' + video.url;
+      const link = document.createElement('a'); link.className = 'openlink'; link.href = video.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Open ↗';
+      main.append(strong, small); item.append(icon, main, link); list.appendChild(item);
+    });
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const url = urlInput.value.trim();
+    if (!validPlatformUrl(url)) {
+      toast.textContent = 'Please enter a valid ' + selectedPlatform + ' URL.';
+      toast.style.background = '#40202a'; toast.style.color = '#ffc1cd'; toast.classList.add('show');
+      return;
+    }
+    videos.push({ platform: selectedPlatform, url, creator: creatorInput.value.trim() });
+    render();
+    toast.textContent = 'Link added to this browser’s discovery board.';
+    toast.style.background = '#12392f'; toast.style.color = '#b9ffe7'; toast.classList.add('show');
+    form.reset(); selectedPlatform = 'TikTok';
+    platformButtons.forEach(b => b.classList.toggle('active', b.dataset.platform === 'TikTok'));
+    urlInput.placeholder = 'https://www.tiktok.com/@name/video/...';
+  });
+  render();
+</script>
+</body>
+</html>
