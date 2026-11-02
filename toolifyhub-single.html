@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToolifyHub - Free Online Calculators, Converters & Text Tools</title>
+<meta name="description" content="ToolifyHub offers free online calculators, unit converters and text tools: age, percentage, GPA, length, weight, temperature, word counter and more.">
+<style>
+:root{--bg:#f6f8fb;--surface:#fff;--text:#1c2433;--muted:#5d6b82;--primary:#3b5bdb;--primary-dark:#2f49b3;--border:#dde3ee;--danger:#e03131;--radius:12px;--shadow:0 2px 10px rgba(28,36,51,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+.container{width:100%;max-width:1100px;margin:0 auto;padding:0 20px}
+.site-header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-size:1.4rem;font-weight:800;color:var(--text);letter-spacing:-.5px}.logo span{color:var(--primary)}.logo:hover{text-decoration:none}
+.nav-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:1.1rem;cursor:pointer}
+.main-nav ul{list-style:none;display:flex;gap:6px}
+.main-nav a{color:var(--text);font-weight:500;font-size:.95rem;padding:8px 12px;border-radius:8px;display:block}
+.main-nav a:hover{background:#eef1fb;color:var(--primary);text-decoration:none}
+.hero{background:linear-gradient(135deg,#3b5bdb,#5f3dc4);color:#fff;padding:64px 0 56px;text-align:center}
+.hero h1{font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.2;margin-bottom:14px}
+.hero p{max-width:640px;margin:0 auto 24px;opacity:.92;font-size:1.08rem}
+.search-box{max-width:480px;margin:0 auto}
+.search-box input{width:100%;padding:14px 18px;border-radius:999px;border:none;font-size:1rem;outline:none;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.section{padding:36px 0}.section h2{font-size:1.5rem;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;margin-bottom:30px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;display:block;color:var(--text)}
+a.card:hover{transform:translateY(-3px);text-decoration:none;box-shadow:0 8px 22px rgba(28,36,51,.12)}
+.card .icon{font-size:1.8rem;margin-bottom:8px}.card h3{font-size:1.05rem;margin-bottom:4px}.card p{color:var(--muted);font-size:.92rem}
+.page-title{padding:32px 0 6px}.page-title h1{font-size:clamp(1.6rem,3vw,2.2rem)}.page-title p{color:var(--muted);margin-top:6px}
+.breadcrumb{font-size:.85rem;color:var(--muted);margin-bottom:10px}
+.tool-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin:18px 0 26px}
+label{display:block;font-weight:600;font-size:.92rem;margin-bottom:6px}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-size:1rem;font-family:inherit;background:#fff;color:var(--text)}
+input:focus,select:focus,textarea:focus{outline:2px solid #bac8ff;border-color:var(--primary)}
+textarea{min-height:200px;resize:vertical}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px}
+.field{margin-bottom:14px}
+.btn{background:var(--primary);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer}
+.btn:hover{background:var(--primary-dark)}.btn.secondary{background:#e9ecef;color:var(--text)}.btn.secondary:hover{background:#dee2e6}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.result{margin-top:18px;background:#edf2ff;border-left:4px solid var(--primary);border-radius:8px;padding:16px 18px;font-size:1.05rem;display:none}
+.result.show{display:block}.result.error{background:#fff5f5;border-left-color:var(--danger);color:var(--danger)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:14px}
+.stat{background:#f1f3f9;border-radius:10px;padding:14px;text-align:center}.stat .num{font-size:1.7rem;font-weight:800;color:var(--primary)}.stat .lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.calc{max-width:340px;margin:0 auto}
+.calc-display{background:#1c2433;color:#fff;border-radius:10px;padding:14px 16px;text-align:right;margin-bottom:12px;min-height:84px}
+.calc-display .expr{color:#9aa5ba;font-size:.9rem;min-height:22px}.calc-display .cur{font-size:2rem;font-weight:700;word-break:break-all}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.keys button{padding:16px 0;font-size:1.15rem;border:1px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;font-weight:600;color:var(--text)}
+.keys button:hover{background:#f1f3f9}.keys .op{background:#edf2ff;color:var(--primary)}.keys .eq{background:var(--primary);color:#fff;border-color:var(--primary)}.keys .clr{background:#fff5f5;color:var(--danger)}
+table.t{width:100%;border-collapse:collapse;margin:8px 0 14px}
+table.t th{text-align:left;font-size:.85rem;color:var(--muted);padding:6px 6px 6px 0}table.t td{padding:4px 8px 4px 0}
+table.t button.rm{background:none;border:none;color:var(--danger);font-size:1.3rem;cursor:pointer}
+.article{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:40px}
+.article h2{margin:22px 0 8px;font-size:1.3rem}.article h2:first-child{margin-top:0}
+.article p,.article li{color:#333d4f;margin-bottom:10px}.article ul{padding-left:22px;margin-bottom:12px}
+.faq-item{border-bottom:1px solid var(--border);padding:14px 0}.faq-item:last-child{border-bottom:none}.faq-item h3{font-size:1.05rem;margin-bottom:6px}
+.ad-slot{background:#f1f3f9;border:1px dashed #c3cadb;border-radius:8px;color:#8b97ad;font-size:.8rem;text-align:center;padding:24px 10px;margin:20px 0}
+.view{display:none}.view.active{display:block}
+.site-footer{background:#1c2433;color:#c5cde0;margin-top:auto;padding:38px 0 18px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:28px}
+.site-footer h4{color:#fff;margin-bottom:10px;font-size:.98rem}.site-footer ul{list-style:none}.site-footer li{margin-bottom:6px}
+.site-footer a{color:#c5cde0;font-size:.92rem}.site-footer a:hover{color:#fff}.site-footer p{font-size:.92rem}
+.copyright{border-top:1px solid #333f57;margin-top:26px;padding-top:16px;font-size:.85rem;text-align:center}
+@media(max-width:820px){.nav-toggle{display:block}.main-nav{display:none;position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px 16px}.main-nav.open{display:block}.main-nav ul{flex-direction:column}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.footer-grid{grid-template-columns:1fr}.tool-box,.article{padding:18px}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#home">Toolify<span>Hub</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<div class="view" id="v-home">
+  <section class="hero">
+    <div class="container">
+      <h1>Free Online Tools for Everyday Tasks</h1>
+      <p>Calculators, converters and text tools that are fast, accurate and free. No sign-up, no downloads.</p>
+      <div class="search-box"><input type="search" id="toolSearch" placeholder="Search tools (e.g. age, weight, words)..." aria-label="Search tools"></div>
+    </div>
+  </section>
+  <div class="container">
+    <section class="section" id="toolList"></section>
+    <section class="article">
+      <h2>Why use ToolifyHub?</h2>
+      <p>ToolifyHub brings the small utilities you need every day into one clean, fast website. Every tool runs directly in your browser, so your numbers and text stay on your device.</p>
+      <ul><li><strong>Free:</strong> no accounts, no paywalls.</li><li><strong>Private:</strong> calculations happen locally.</li><li><strong>Mobile friendly:</strong> works on any device.</li><li><strong>Accurate:</strong> standard formulas and exact unit definitions.</li></ul>
+    </section>
+  </div>
+</div>
+
+<!-- AGE -->
+<div class="view" id="v-age"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Age Calculator</div><h1>Age Calculator</h1><p>Find out exactly how old you are in years, months and days.</p></div>
+  <section class="tool-box">
+    <div class="form-row">
+      <div><label for="dob">Date of birth</label><input type="date" id="dob"></div>
+      <div><label for="ageAt">Age at the date of</label><input type="date" id="ageAt"></div>
+    </div>
+    <div class="btn-row"><button class="btn" id="ageBtn">Calculate Age</button></div>
+    <div id="ageRes" class="result"></div>
+  </section>
+  <section class="article"><h2>How it works</h2><p>The tool compares your date of birth with a second date (today by default) and counts full years, remaining months and days. It also shows total days lived and days until your next birthday.</p></section>
+</div></div>
+
+<!-- PERCENTAGE -->
+<div class="view" id="v-percentage"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Percentage Calculator</div><h1>Percentage Calculator</h1><p>Percentages, share of a total and percentage change.</p></div>
+  <section class="tool-box">
+    <h3>1. What is X% of Y?</h3>
+    <div class="form-row" style="margin-top:10px"><div><label for="p1a">Percentage (%)</label><input type="number" id="p1a" step="any"></div><div><label for="p1b">Of the number</label><input type="number" id="p1b" step="any"></div></div>
+    <button class="btn" id="pb1">Calculate</button><div id="pr1" class="result"></div>
+    <hr style="margin:26px 0;border:none;border-top:1px solid var(--border)">
+    <h3>2. X is what percent of Y?</h3>
+    <div class="form-row" style="margin-top:10px"><div><label for="p2a">Number (X)</label><input type="number" id="p2a" step="any"></div><div><label for="p2b">Total (Y)</label><input type="number" id="p2b" step="any"></div></div>
+    <button class="btn" id="pb2">Calculate</button><div id="pr2" class="result"></div>
+    <hr style="margin:26px 0;border:none;border-top:1px solid var(--border)">
+    <h3>3. Percentage increase / decrease</h3>
+    <div class="form-row" style="margin-top:10px"><div><label for="p3a">From (old)</label><input type="number" id="p3a" step="any"></div><div><label for="p3b">To (new)</label><input type="number" id="p3b" step="any"></div></div>
+    <button class="btn" id="pb3">Calculate</button><div id="pr3" class="result"></div>
+  </section>
+  <section class="article"><h2>Formulas</h2><ul><li>X% of Y = (X &divide; 100) &times; Y</li><li>X is what % of Y = (X &divide; Y) &times; 100</li><li>Change = ((New &minus; Old) &divide; |Old|) &times; 100</li></ul></section>
+</div></div>
+
+<!-- BASIC CALC -->
+<div class="view" id="v-basic"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Basic Calculator</div><h1>Basic Calculator</h1><p>Simple arithmetic. Keyboard supported.</p></div>
+  <section class="tool-box">
+    <div class="calc">
+      <div class="calc-display"><div class="expr" id="cExpr"></div><div class="cur" id="cCur">0</div></div>
+      <div class="keys" id="cKeys">
+        <button class="clr" data-k="C">C</button><button class="op" data-k="DEL">&#9003;</button><button class="op" data-k="%">%</button><button class="op" data-k="/">&divide;</button>
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="op" data-k="*">&times;</button>
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="op" data-k="-">&minus;</button>
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="op" data-k="+">+</button>
+        <button data-k="NEG">&plusmn;</button><button data-k="0">0</button><button data-k=".">.</button><button class="eq" data-k="=">=</button>
+      </div>
+    </div>
+  </section>
+  <section class="article"><h2>Tips</h2><p>Use your keyboard: digits, + - * /, Enter for result, Backspace to delete, Esc to clear. Operations are evaluated left to right like a handheld calculator.</p></section>
+</div></div>
+
+<!-- DISCOUNT -->
+<div class="view" id="v-discount"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Discount Calculator</div><h1>Discount Calculator</h1><p>Final price after discounts and optional tax.</p></div>
+  <section class="tool-box">
+    <div class="form-row"><div><label for="price">Original price</label><input type="number" id="price" step="any" min="0"></div><div><label for="disc">Discount (%)</label><input type="number" id="disc" step="any" min="0" max="100"></div></div>
+    <div class="form-row"><div><label for="disc2">Extra discount (%) <small>optional</small></label><input type="number" id="disc2" step="any" min="0" max="100"></div><div><label for="tax">Sales tax (%) <small>optional</small></label><input type="number" id="tax" step="any" min="0"></div></div>
+    <div class="btn-row"><button class="btn" id="discBtn">Calculate Price</button></div>
+    <div id="discRes" class="result"></div>
+  </section>
+  <section class="article"><h2>How it works</h2><p>Sale price = Original &times; (1 &minus; Discount &divide; 100). A second discount is taken off the already reduced price, and tax is applied last.</p></section>
+</div></div>
+
+<!-- GPA -->
+<div class="view" id="v-gpa"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; GPA Calculator</div><h1>GPA Calculator</h1><p>Calculate your GPA on a 4.0 scale.</p></div>
+  <section class="tool-box">
+    <table class="t"><thead><tr><th>Course</th><th>Grade</th><th>Credits</th><th></th></tr></thead><tbody id="gpaBody"></tbody></table>
+    <div class="btn-row"><button class="btn secondary" id="gpaAdd">+ Add course</button><button class="btn" id="gpaCalc">Calculate GPA</button><button class="btn secondary" id="gpaReset">Reset</button></div>
+    <div id="gpaRes" class="result"></div>
+  </section>
+  <section class="article"><h2>Formula</h2><p>GPA = &Sigma;(grade points &times; credits) &divide; &Sigma;(credits). This tool uses the standard unweighted 4.0 scale; your school's official GPA may differ.</p></section>
+</div></div>
+
+<!-- LENGTH -->
+<div class="view" id="v-length"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Length Converter</div><h1>Length Converter</h1><p>mm, cm, m, km, inches, feet, yards and miles.</p></div>
+  <section class="tool-box" id="conv-length"></section>
+  <section class="article"><h2>Common conversions</h2><ul><li>1 inch = 2.54 cm</li><li>1 foot = 0.3048 m</li><li>1 mile = 1.609344 km</li></ul></section>
+</div></div>
+
+<!-- WEIGHT -->
+<div class="view" id="v-weight"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Weight Converter</div><h1>Weight Converter</h1><p>mg, g, kg, tons, ounces, pounds and stones.</p></div>
+  <section class="tool-box" id="conv-weight"></section>
+  <section class="article"><h2>Common conversions</h2><ul><li>1 kg = 2.20462 lb</li><li>1 lb = 16 oz = 0.45359237 kg</li><li>1 stone = 14 lb</li></ul></section>
+</div></div>
+
+<!-- TEMPERATURE -->
+<div class="view" id="v-temperature"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Temperature Converter</div><h1>Temperature Converter</h1><p>Celsius, Fahrenheit and Kelvin.</p></div>
+  <section class="tool-box">
+    <div class="form-row">
+      <div><label for="tVal">Temperature</label><input type="number" id="tVal" step="any" value="25"></div>
+      <div><label for="tFrom">From</label><select id="tFrom"><option value="C">Celsius (&deg;C)</option><option value="F">Fahrenheit (&deg;F)</option><option value="K">Kelvin (K)</option></select></div>
+      <div><label for="tTo">To</label><select id="tTo"><option value="F">Fahrenheit (&deg;F)</option><option value="C">Celsius (&deg;C)</option><option value="K">Kelvin (K)</option></select></div>
+    </div>
+    <div class="btn-row"><button class="btn secondary" id="tSwap">&#8646; Swap units</button></div>
+    <div id="tRes" class="result"></div>
+  </section>
+  <section class="article"><h2>Formulas</h2><ul><li>&deg;F = &deg;C &times; 9/5 + 32</li><li>&deg;C = (&deg;F &minus; 32) &times; 5/9</li><li>K = &deg;C + 273.15</li></ul></section>
+</div></div>
+
+<!-- WORD COUNTER -->
+<div class="view" id="v-words"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Word Counter</div><h1>Word Counter</h1><p>Words, characters, sentences, paragraphs and reading time.</p></div>
+  <section class="tool-box">
+    <div class="stats">
+      <div class="stat"><div class="num" id="wW">0</div><div class="lbl">Words</div></div>
+      <div class="stat"><div class="num" id="wC">0</div><div class="lbl">Characters</div></div>
+      <div class="stat"><div class="num" id="wN">0</div><div class="lbl">No spaces</div></div>
+      <div class="stat"><div class="num" id="wS">0</div><div class="lbl">Sentences</div></div>
+      <div class="stat"><div class="num" id="wP">0</div><div class="lbl">Paragraphs</div></div>
+      <div class="stat"><div class="num" id="wR">0 min</div><div class="lbl">Reading time</div></div>
+    </div>
+    <label for="wText">Your text</label><textarea id="wText" placeholder="Type or paste your text here..."></textarea>
+    <div class="btn-row"><button class="btn secondary" id="wClear">Clear text</button></div>
+  </section>
+  <section class="article"><h2>About</h2><p>Reading time is estimated at 200 words per minute. Your text never leaves your browser.</p></section>
+</div></div>
+
+<!-- CHARACTER COUNTER -->
+<div class="view" id="v-chars"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Character Counter</div><h1>Character Counter</h1><p>Count characters and check platform limits.</p></div>
+  <section class="tool-box">
+    <div class="field"><label for="kLimit">Check against a limit</label>
+      <select id="kLimit"><option value="0">No limit</option><option value="280">X / Twitter post (280)</option><option value="60">SEO title tag (60)</option><option value="160">Meta description (160)</option><option value="160">SMS message (160)</option><option value="2200">Instagram caption (2,200)</option></select></div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="kC">0</div><div class="lbl">Characters</div></div>
+      <div class="stat"><div class="num" id="kN">0</div><div class="lbl">Without spaces</div></div>
+      <div class="stat"><div class="num" id="kL">0</div><div class="lbl">Lines</div></div>
+    </div>
+    <p id="kInfo" style="font-weight:600;margin-bottom:10px"></p>
+    <label for="kText">Your text</label><textarea id="kText" placeholder="Type or paste your text here..."></textarea>
+    <div class="btn-row"><button class="btn secondary" id="kClear">Clear text</button></div>
+  </section>
+</div></div>
+
+<!-- CASE CONVERTER -->
+<div class="view" id="v-case"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Case Converter</div><h1>Case Converter</h1><p>UPPER, lower, Title, Sentence, camelCase and more.</p></div>
+  <section class="tool-box">
+    <label for="cText">Your text</label><textarea id="cText" placeholder="Type or paste your text here..."></textarea>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn" data-case="upper">UPPERCASE</button><button class="btn" data-case="lower">lowercase</button><button class="btn" data-case="title">Title Case</button><button class="btn" data-case="sentence">Sentence case</button>
+    </div>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn secondary" data-case="camel">camelCase</button><button class="btn secondary" data-case="pascal">PascalCase</button><button class="btn secondary" data-case="snake">snake_case</button><button class="btn secondary" data-case="kebab">kebab-case</button><button class="btn secondary" data-case="alt">aLtErNaTiNg</button><button class="btn secondary" data-case="invert">iNVERT</button>
+    </div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn secondary" id="cCopy">Copy text</button><button class="btn secondary" id="cClear">Clear</button></div>
+  </section>
+</div></div>
+
+<!-- STATIC PAGES -->
+<div class="view" id="v-about"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; About Us</div><h1>About Us</h1></div>
+  <section class="article" style="margin-top:18px">
+    <h2>Our mission</h2><p>ToolifyHub was created to make everyday tasks quicker. Whether you need a percentage, a unit conversion or a word count, you should not need to download an app or create an account.</p>
+    <h2>What we offer</h2><ul><li><strong>Calculators:</strong> age, percentage, basic, discount, GPA.</li><li><strong>Converters:</strong> length, weight, temperature.</li><li><strong>Text tools:</strong> word counter, character counter, case converter.</li></ul>
+    <h2>Our principles</h2><p>Our tools are free, run in your browser, and work well on any device.</p>
+  </section>
+</div></div>
+
+<div class="view" id="v-contact"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Contact Us</div><h1>Contact Us</h1></div>
+  <section class="article" style="margin-top:18px">
+    <p>Questions, feedback or a tool idea? Email <a href="mailto:contact@toolifyhub.com">contact@toolifyhub.com</a> or use the form below.</p>
+    <div style="margin-top:16px">
+      <div class="field"><label for="fName">Your name</label><input type="text" id="fName"></div>
+      <div class="field"><label for="fEmail">Email address</label><input type="text" id="fEmail"></div>
+      <div class="field"><label for="fSub">Subject</label><input type="text" id="fSub"></div>
+      <div class="field"><label for="fMsg">Message</label><textarea id="fMsg"></textarea></div>
+      <button class="btn" id="fSend">Send Message</button>
+      <p id="fNote" class="result" style="margin-top:14px"></p>
+    </div>
+    <p style="margin-top:16px"><small>This form opens your email app with the message pre-filled.</small></p>
+  </section>
+</div></div>
+
+<div class="view" id="v-privacy"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Privacy Policy</div><h1>Privacy Policy</h1></div>
+  <section class="article" style="margin-top:18px">
+    <p><em>Last updated: November 2, 2026</em></p>
+    <h2>Information we do not collect</h2><p>The calculators, converters and text tools run entirely in your browser. What you enter is processed on your device and is not sent to our servers.</p>
+    <h2>Automatically collected data</h2><p>Our hosting provider may log standard technical data such as IP address, browser type and pages visited, to keep the site secure and understand usage.</p>
+    <h2>Cookies and advertising</h2><p>We and our partners, such as Google AdSense, may use cookies to remember preferences, measure traffic and show ads. You can opt out of personalized ads at <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a> and manage cookies in your browser.</p>
+    <h2>Children</h2><p>The site is not directed to children under 13.</p>
+    <h2>Your rights</h2><p>Depending on where you live, you may request access, correction or deletion of personal data. Contact us at contact@toolifyhub.com.</p>
+    <h2>Changes</h2><p>We may update this policy from time to time.</p>
+  </section>
+</div></div>
+
+<div class="view" id="v-terms"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Terms &amp; Conditions</div><h1>Terms &amp; Conditions</h1></div>
+  <section class="article" style="margin-top:18px">
+    <p><em>Last updated: November 2, 2026</em></p>
+    <p>By using ToolifyHub you agree to these terms.</p>
+    <h2>Use of the website</h2><p>You may use our tools for personal and commercial purposes, but you must not misuse or disrupt the site.</p>
+    <h2>Accuracy</h2><p>Results are for general information only. Please verify important calculations.</p>
+    <h2>Intellectual property</h2><p>The design, text and code of this website belong to ToolifyHub unless stated otherwise.</p>
+    <h2>Limitation of liability</h2><p>To the extent permitted by law, ToolifyHub is not liable for loss arising from use of the website or its tools.</p>
+    <h2>Changes</h2><p>We may update these terms at any time.</p>
+  </section>
+</div></div>
+
+<div class="view" id="v-disclaimer"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; Disclaimer</div><h1>Disclaimer</h1></div>
+  <section class="article" style="margin-top:18px">
+    <p><em>Last updated: November 2, 2026</em></p>
+    <h2>General information only</h2><p>Tools and content on ToolifyHub are for general informational and educational use, with no guarantee of completeness or accuracy.</p>
+    <h2>Not professional advice</h2><p>Nothing here is financial, legal, medical or academic advice. For important decisions, consult a qualified professional or official source. GPA results are estimates and your institution's official calculation may differ.</p>
+    <h2>Use at your own risk</h2><p>ToolifyHub is not responsible for any loss resulting from reliance on results. We are also not responsible for third-party ads or links.</p>
+  </section>
+</div></div>
+
+<div class="view" id="v-faq"><div class="container">
+  <div class="page-title"><div class="breadcrumb"><a href="#home">Home</a> &rsaquo; FAQ</div><h1>Frequently Asked Questions</h1></div>
+  <section class="article" style="margin-top:18px">
+    <div class="faq-item"><h3>Is ToolifyHub free?</h3><p>Yes. All tools are free and need no account.</p></div>
+    <div class="faq-item"><h3>Do you store what I enter?</h3><p>No. Everything runs in your browser.</p></div>
+    <div class="faq-item"><h3>Does it work on mobile?</h3><p>Yes, the site is responsive.</p></div>
+    <div class="faq-item"><h3>Are results accurate?</h3><p>We use standard formulas and exact unit definitions, but double-check important results.</p></div>
+    <div class="faq-item"><h3>Can I suggest a tool?</h3><p>Yes, use the contact page.</p></div>
+  </section>
+</div></div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><h4>ToolifyHub</h4><p>Free online calculators, converters and text tools. Fast, private and easy to use.</p></div>
+      <div><h4>Popular Tools</h4><ul><li><a href="#age">Age Calculator</a></li><li><a href="#percentage">Percentage Calculator</a></li><li><a href="#length">Length Converter</a></li><li><a href="#words">Word Counter</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#about">About Us</a></li><li><a href="#contact">Contact Us</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="#privacy">Privacy Policy</a></li><li><a href="#terms">Terms &amp; Conditions</a></li><li><a href="#disclaimer">Disclaimer</a></li></ul></div>
+    </div>
+    <div class="copyright">&copy; <span id="year"></span> ToolifyHub. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+function show(el,html,err){el.innerHTML=html;el.classList.add('show');el.classList.toggle('error',!!err)}
+function hide(el){el.classList.remove('show')}
+function fmt(n,d){if(!isFinite(n))return String(n);var p=Math.pow(10,d==null?6:d);return String(Math.round(n*p)/p)}
+$('year').textContent=new Date().getFullYear();
+
+/* ---------- Router ---------- */
+var TOOLS=[
+ ['Calculators',[['age','Age Calculator','🎂','Find your exact age in years, months and days.'],['percentage','Percentage Calculator','％','Percent of a number, percent change and more.'],['basic','Basic Calculator','🧮','Add, subtract, multiply and divide.'],['discount','Discount Calculator','🏷️','Sale prices, savings and tax.'],['gpa','GPA Calculator','🎓','Calculate your semester or cumulative GPA.']]],
+ ['Converters',[['length','Length Converter','📏','Meters, feet, inches, miles and more.'],['weight','Weight Converter','⚖️','Kilograms, pounds, ounces and more.'],['temperature','Temperature Converter','🌡️','Celsius, Fahrenheit and Kelvin.']]],
+ ['Text Tools',[['words','Word Counter','📝','Words, sentences and reading time.'],['chars','Character Counter','🔤','Characters with social media limits.'],['case','Case Converter','Aa','UPPER, lower, Title and more.']]]
+];
+var list=$('toolList'),html='';
+TOOLS.forEach(function(g){
+  html+='<div class="tool-group"><h2>'+g[0]+'</h2><div class="grid">'+g[1].map(function(t){
+    return '<a class="card" href="#'+t[0]+'" data-s="'+(t[1]+' '+t[3]).toLowerCase()+'"><div class="icon">'+t[2]+'</div><h3>'+t[1]+'</h3><p>'+t[3]+'</p></a>';
+  }).join('')+'</div></div>';
+});
+list.innerHTML=html;
+$('toolSearch').addEventListener('input',function(){
+  var q=this.value.trim().toLowerCase();
+  list.querySelectorAll('.card').forEach(function(c){c.style.display=!q||c.getAttribute('data-s').indexOf(q)>-1?'':'none'});
+  list.querySelectorAll('.tool-group').forEach(function(g){
+    var v=Array.prototype.some.call(g.querySelectorAll('.card'),function(c){return c.style.display!=='none'});
+    g.style.display=v?'':'none';
+  });
+});
+var TITLES={home:'ToolifyHub - Free Online Calculators, Converters & Text Tools'};
+function route(){
+  var h=(location.hash||'#home').slice(1);
+  if(h==='tools'){h='home';setTimeout(function(){$('toolList').scrollIntoView()},30)}
+  var v=$('v-'+h);if(!v){h='home';v=$('v-home')}
+  document.querySelectorAll('.view').forEach(function(e){e.classList.remove('active')});
+  v.classList.add('active');
+  var t=v.querySelector('h1');
+  document.title=h==='home'?TITLES.home:(t?t.textContent+' | ToolifyHub':'ToolifyHub');
+  $('mainNav').classList.remove('open');
+  if(location.hash!=='#tools'&&h!=='home')window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);route();
+$('navToggle').addEventListener('click',function(){$('mainNav').classList.toggle('open')});
+
+/* ---------- Age ---------- */
+$('ageAt').value=new Date().toISOString().slice(0,10);
+$('ageBtn').addEventListener('click',function(){
+  var out=$('ageRes'),dob=new Date($('dob').value),at=new Date($('ageAt').value);
+  if(isNaN(dob)||isNaN(at))return show(out,'Please enter both dates.',true);
+  if(dob>at)return show(out,'Date of birth must be before the calculation date.',true);
+  var y=at.getFullYear()-dob.getFullYear(),m=at.getMonth()-dob.getMonth(),d=at.getDate()-dob.getDate();
+  if(d<0){m--;d+=new Date(at.getFullYear(),at.getMonth(),0).getDate()}
+  if(m<0){y--;m+=12}
+  var days=Math.floor((at-dob)/864e5),nx=new Date(at.getFullYear(),dob.getMonth(),dob.getDate());
+  if(nx<at)nx.setFullYear(at.getFullYear()+1);
+  var left=Math.round((nx-at)/864e5);
+  show(out,'<div class="stats"><div class="stat"><div class="num">'+y+'</div><div class="lbl">Years</div></div><div class="stat"><div class="num">'+m+'</div><div class="lbl">Months</div></div><div class="stat"><div class="num">'+d+'</div><div class="lbl">Days</div></div></div>Total: <strong>'+days.toLocaleString()+'</strong> days ('+Math.floor(days/7).toLocaleString()+' weeks). Next birthday in <strong>'+left+'</strong> day'+(left===1?'':'s')+'.');
+});
+
+/* ---------- Percentage ---------- */
+function n(id){return parseFloat($(id).value)}
+$('pb1').addEventListener('click',function(){var a=n('p1a'),b=n('p1b'),o=$('pr1');if(isNaN(a)||isNaN(b))return show(o,'Enter both numbers.',true);show(o,fmt(a)+'% of '+fmt(b)+' = <strong>'+fmt(a/100*b)+'</strong>')});
+$('pb2').addEventListener('click',function(){var a=n('p2a'),b=n('p2b'),o=$('pr2');if(isNaN(a)||isNaN(b))return show(o,'Enter both numbers.',true);if(b===0)return show(o,'The total cannot be zero.',true);show(o,fmt(a)+' is <strong>'+fmt(a/b*100,4)+'%</strong> of '+fmt(b))});
+$('pb3').addEventListener('click',function(){var a=n('p3a'),b=n('p3b'),o=$('pr3');if(isNaN(a)||isNaN(b))return show(o,'Enter both numbers.',true);if(a===0)return show(o,'The starting value cannot be zero.',true);var c=(b-a)/Math.abs(a)*100;show(o,'Change from '+fmt(a)+' to '+fmt(b)+': <strong>'+(c>=0?'+':'')+fmt(c,4)+'%</strong> ('+(c>=0?'increase':'decrease')+')')});
+
+/* ---------- Basic calculator ---------- */
+(function(){
+  var cur='0',prev=null,op=null,fresh=false,sym={'+':'+','-':'−','*':'×','/':'÷'};
+  function render(){$('cCur').textContent=cur;$('cExpr').textContent=prev!==null&&op?fmt(prev,10)+' '+sym[op]:''}
+  function calc(a,b,o){return o==='+'?a+b:o==='-'?a-b:o==='*'?a*b:o==='/'?(b===0?NaN:a/b):b}
+  function apply(){if(prev===null||!op)return true;var r=calc(prev,parseFloat(cur),op);if(isNaN(r)){cur='Error';prev=null;op=null;fresh=true;return false}cur=String(Math.round(r*1e10)/1e10);return true}
+  function press(k){
+    if(cur==='Error'&&k!=='C')cur='0';
+    if(/^[0-9]$/.test(k)){if(fresh||cur==='0')cur=k;else cur+=k;fresh=false}
+    else if(k==='.'){if(fresh){cur='0.';fresh=false}else if(cur.indexOf('.')<0)cur+='.'}
+    else if(k==='C'){cur='0';prev=null;op=null;fresh=false}
+    else if(k==='DEL'){cur=cur.length>1&&!fresh?cur.slice(0,-1):'0'}
+    else if(k==='NEG'){if(cur!=='0')cur=cur.charAt(0)==='-'?cur.slice(1):'-'+cur}
+    else if(k==='%'){cur=String(parseFloat(cur)/100)}
+    else if(k==='='){if(apply()){prev=null;op=null;fresh=true}}
+    else{if(op&&!fresh){if(!apply()){render();return}}prev=parseFloat(cur);op=k;fresh=true}
+    render();
+  }
+  $('cKeys').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'))});
+  document.addEventListener('keydown',function(e){
+    if(!$('v-basic').classList.contains('active'))return;
+    if(/^[0-9.]$/.test(e.key))press(e.key);
+    else if('+-*/'.indexOf(e.key)>-1)press(e.key);
+    else if(e.key==='Enter'||e.key==='='){e.preventDefault();press('=')}
+    else if(e.key==='Backspace')press('DEL');
+    else if(e.key==='Escape')press('C');
+    else if(e.key==='%')press('%');
+  });
+  render();
+})();
+
+/* ---------- Discount ---------- */
+$('discBtn').addEventListener('click',function(){
+  var o=$('discRes'),p=n('price'),d=n('disc'),e=n('disc2')||0,t=n('tax')||0;
+  if(isNaN(p)||isNaN(d))return show(o,'Enter the original price and discount.',true);
+  if(p<0||d<0||d>100||e<0||e>100||t<0)return show(o,'Please enter valid values (discounts between 0 and 100).',true);
+  var a=p*(1-d/100)*(1-e/100),tx=a*t/100,f=a+tx,s=p-a;
+  show(o,'<div class="stats"><div class="stat"><div class="num">'+fmt(f,2)+'</div><div class="lbl">Final price</div></div><div class="stat"><div class="num">'+fmt(s,2)+'</div><div class="lbl">You save</div></div><div class="stat"><div class="num">'+fmt(p>0?s/p*100:0,2)+'%</div><div class="lbl">Total off</div></div></div>Price after discount: <strong>'+fmt(a,2)+'</strong>'+(t?' &middot; Tax: <strong>'+fmt(tx,2)+'</strong>':''));
+});
+
+/* ---------- GPA ---------- */
+(function(){
+  var G=[['A+',4],['A',4],['A-',3.7],['B+',3.3],['B',3],['B-',2.7],['C+',2.3],['C',2],['C-',1.7],['D+',1.3],['D',1],['F',0]],body=$('gpaBody');
+  function add(){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td><input type="text" placeholder="Course name" aria-label="Course name"></td><td><select class="g">'+G.map(function(g){return '<option value="'+g[1]+'">'+g[0]+' ('+g[1].toFixed(1)+')</option>'}).join('')+'</select></td><td><input type="number" class="c" min="0" step="0.5" value="3"></td><td><button class="rm" aria-label="Remove">&times;</button></td>';
+    body.appendChild(tr);
+  }
+  function reset(){body.innerHTML='';for(var i=0;i<4;i++)add()}
+  reset();
+  $('gpaAdd').addEventListener('click',add);
+  body.addEventListener('click',function(e){if(e.target.classList.contains('rm')&&body.rows.length>1)body.removeChild(e.target.closest('tr'))});
+  $('gpaCalc').addEventListener('click',function(){
+    var pts=0,cr=0,o=$('gpaRes');
+    Array.prototype.forEach.call(body.rows,function(tr){var g=parseFloat(tr.querySelector('.g').value),c=parseFloat(tr.querySelector('.c').value);if(!isNaN(g)&&!isNaN(c)&&c>0){pts+=g*c;cr+=c}});
+    if(!cr)return show(o,'Add at least one course with credits greater than zero.',true);
+    show(o,'<div class="stats"><div class="stat"><div class="num">'+(pts/cr).toFixed(2)+'</div><div class="lbl">GPA (4.0 scale)</div></div><div class="stat"><div class="num">'+fmt(cr,1)+'</div><div class="lbl">Total credits</div></div><div class="stat"><div class="num">'+fmt(pts,2)+'</div><div class="lbl">Grade points</div></div></div>');
+  });
+  $('gpaReset').addEventListener('click',function(){reset();hide($('gpaRes'))});
+})();
+
+/* ---------- Unit converters ---------- */
+function makeConverter(key,list,defFrom,defTo){
+  var root=$('conv-'+key);
+  root.innerHTML='<div class="form-row"><div><label for="'+key+'V">Value</label><input type="number" id="'+key+'V" step="any" value="1"></div><div><label for="'+key+'F">From</label><select id="'+key+'F"></select></div><div><label for="'+key+'T">To</label><select id="'+key+'T"></select></div></div><div class="btn-row"><button class="btn secondary" id="'+key+'S">&#8646; Swap units</button></div><div id="'+key+'R" class="result"></div><h3 style="margin-top:22px">All conversions</h3><table class="t"><tbody id="'+key+'Tb"></tbody></table>';
+  var V=$(key+'V'),F=$(key+'F'),T=$(key+'T'),R=$(key+'R');
+  list.forEach(function(u,i){F.add(new Option(u[0],i));T.add(new Option(u[0],i))});
+  F.value=defFrom;T.value=defTo;
+  function go(){
+    var v=parseFloat(V.value);if(isNaN(v)){hide(R);return}
+    var f=list[F.value],t=list[T.value];
+    show(R,fmt(v)+' '+f[0]+' = <strong>'+fmt(v*f[1]/t[1],8)+'</strong> '+t[0]);
+    $(key+'Tb').innerHTML=list.map(function(u){return '<tr><td>'+u[0]+'</td><td>'+fmt(v*f[1]/u[1],8)+'</td></tr>'}).join('');
+  }
+  ['input','change'].forEach(function(ev){V.addEventListener(ev,go);F.addEventListener(ev,go);T.addEventListener(ev,go)});
+  $(key+'S').addEventListener('click',function(){var x=F.value;F.value=T.value;T.value=x;go()});
+  go();
+}
+makeConverter('length',[['Millimeter (mm)',.001],['Centimeter (cm)',.01],['Meter (m)',1],['Kilometer (km)',1000],['Inch (in)',.0254],['Foot (ft)',.3048],['Yard (yd)',.9144],['Mile (mi)',1609.344]],2,3);
+makeConverter('weight',[['Milligram (mg)',1e-6],['Gram (g)',.001],['Kilogram (kg)',1],['Metric ton (t)',1000],['Ounce (oz)',.028349523125],['Pound (lb)',.45359237],['Stone (st)',6.35029318]],2,5);
+
+/* ---------- Temperature ---------- */
+(function(){
+  var toC={C:function(x){return x},F:function(x){return (x-32)*5/9},K:function(x){return x-273.15}},
+      fromC={C:function(x){return x},F:function(x){return x*9/5+32},K:function(x){return x+273.15}},
+      nm={C:'°C',F:'°F',K:' K'},V=$('tVal'),F=$('tFrom'),T=$('tTo'),R=$('tRes');
+  function go(){
+    var v=parseFloat(V.value);if(isNaN(v)){hide(R);return}
+    var c=toC[F.value](v);
+    if(c<-273.15-1e-9)return show(R,'That is below absolute zero (-273.15 °C).',true);
+    show(R,fmt(v,4)+nm[F.value]+' = <strong>'+fmt(fromC[T.value](c),4)+nm[T.value]+'</strong>');
+  }
+  ['input','change'].forEach(function(ev){V.addEventListener(ev,go);F.addEventListener(ev,go);T.addEventListener(ev,go)});
+  $('tSwap').addEventListener('click',function(){var x=F.value;F.value=T.value;T.value=x;go()});
+  go();
+})();
+
+/* ---------- Word counter ---------- */
+(function(){
+  var t=$('wText');
+  function up(){
+    var s=t.value,w=s.trim()?s.trim().split(/\s+/).length:0,
+        sent=(s.match(/[^.!?]+[.!?]+/g)||[]).length||(s.trim()?1:0),
+        para=s.trim()?s.split(/\n\s*\n/).filter(function(p){return p.trim()}).length:0,m=w/200;
+    $('wW').textContent=w;$('wC').textContent=s.length;$('wN').textContent=s.replace(/\s/g,'').length;
+    $('wS').textContent=sent;$('wP').textContent=para;
+    $('wR').textContent=w?(m<1?'<1 min':Math.ceil(m)+' min'):'0 min';
+  }
+  t.addEventListener('input',up);
+  $('wClear').addEventListener('click',function(){t.value='';up();t.focus()});
+  up();
+})();
+
+/* ---------- Character counter ---------- */
+(function(){
+  var t=$('kText'),L=$('kLimit');
+  function up(){
+    var s=t.value,lim=parseInt(L.value,10),len=s.length;
+    $('kC').textContent=len;$('kN').textContent=s.replace(/\s/g,'').length;$('kL').textContent=s?s.split('\n').length:0;
+    var i=$('kInfo');
+    if(lim){var left=lim-len;i.textContent=left>=0?left+' characters remaining of '+lim:Math.abs(left)+' characters over the '+lim+' limit';i.style.color=left>=0?'':'var(--danger)'}
+    else i.textContent='';
+  }
+  t.addEventListener('input',up);L.addEventListener('change',up);
+  $('kClear').addEventListener('click',function(){t.value='';up();t.focus()});
+  up();
+})();
+
+/* ---------- Case converter ---------- */
+(function(){
+  var t=$('cText');
+  function words(s){return s.replace(/[_\-]+/g,' ').split(/\s+/).filter(Boolean)}
+  var C={
+    upper:function(s){return s.toUpperCase()},
+    lower:function(s){return s.toLowerCase()},
+    title:function(s){return s.toLowerCase().replace(/(^|[\s\-(["'])([a-zà-ÿ])/g,function(m,a,b){return a+b.toUpperCase()})},
+    sentence:function(s){return s.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-zà-ÿ])/g,function(m,a,b){return a+b.toUpperCase()})},
+    camel:function(s){return words(s).map(function(w,i){w=w.toLowerCase();return i?w.charAt(0).toUpperCase()+w.slice(1):w}).join('')},
+    pascal:function(s){return words(s).map(function(w){w=w.toLowerCase();return w.charAt(0).toUpperCase()+w.slice(1)}).join('')},
+    snake:function(s){return words(s).map(function(w){return w.toLowerCase()}).join('_')},
+    kebab:function(s){return words(s).map(function(w){return w.toLowerCase()}).join('-')},
+    alt:function(s){var i=0;return s.replace(/[a-zA-Z]/g,function(c){return i++%2?c.toUpperCase():c.toLowerCase()})},
+    invert:function(s){return s.replace(/[a-zA-Z]/g,function(c){return c===c.toUpperCase()?c.toLowerCase():c.toUpperCase()})}
+  };
+  document.querySelectorAll('[data-case]').forEach(function(b){b.addEventListener('click',function(){t.value=C[b.getAttribute('data-case')](t.value)})});
+  $('cCopy').addEventListener('click',function(){
+    var b=$('cCopy');
+    function done(){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy text'},1500)}
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t.value).then(done);
+    else{t.select();document.execCommand('copy');done()}
+  });
+  $('cClear').addEventListener('click',function(){t.value='';t.focus()});
+})();
+
+/* ---------- Contact ---------- */
+$('fSend').addEventListener('click',function(){
+  var name=$('fName').value.trim(),email=$('fEmail').value.trim(),sub=$('fSub').value.trim(),msg=$('fMsg').value.trim(),note=$('fNote');
+  if(!name||!email||!msg)return show(note,'Please fill in your name, email and message.',true);
+  location.href='mailto:contact@toolifyhub.com?subject='+encodeURIComponent(sub||'Message from ToolifyHub')+'&body='+encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+msg);
+  show(note,'Thanks! Your email app should open with your message ready to send.');
+});
+})();
+</script>
+</body>
+</html>
